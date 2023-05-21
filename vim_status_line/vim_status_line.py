@@ -4,11 +4,17 @@
 from subprocess import call, STDOUT
 import subprocess
 import os
+import functools
+import time
+
+
+# The default time in seconds to use for hashing.
+_DEFAULT_HASH_TIME = 2
 
 
 def _findGitRoot(path):
     """Finds the root of the git repo for the passed in file path.
-    
+
     (str) path: The full path to the file to lookup.
 
     Returns the root directory for the git repo that contains the file.
@@ -26,60 +32,81 @@ def _findGitRoot(path):
         return _findGitRoot(parent_dir)
 
 
-def collectGitStatus(filepath):
-    """Returns git information about the git repo of the passed in file.
+junk = 0
 
-    (str) filepath: The full path to the file to use.
 
-    If the file does not belong to a git repo returns None otherwise
-    it will return a dictionary describing the related git info.
+def makeTimeHash(seconds=_DEFAULT_HASH_TIME):
+    """Makes a time hash based on the passed in seconds."""
+    return round(time.time() / seconds)
+
+
+@functools.lru_cache()
+def getFileStatus(filepath, time_hash=None):
+    """Returns the git status for the passed in file.
+
+    git status -s <filename> 
+    """
+    if not os.path.isfile(filepath):
+        return "n/a"
+    try:
+        root_dir = _findGitRoot(filepath)
+    except FileNotFoundError:
+        return "n/a"
+    else:
+        current_dir = os.getcwd()
+        os.chdir(root_dir)
+        status = subprocess.check_output(["git", "status", "-s", filepath])
+        status = status.decode()
+        if status.startswith("M"):
+            status = "staged"
+        elif status.startswith(" M"):
+            status = "modified"
+        elif status.startswith("??"):
+            status = "untracked"
+        elif status.strip() == '':
+            status = "commited"
+        else:
+            status = "n/a"
+        os.chdir(current_dir)
+        return status
+
+
+@functools.lru_cache()
+def getBranchName(filepath, time_hash=None):
+    """Returns the branch name for the passed in file.
+
+    git branch --show-current
     """
     try:
         root_dir = _findGitRoot(filepath)
     except FileNotFoundError:
-        return None
+        return "n/a"
     else:
-        current_path = os.getcwd()
+        current_dir = os.getcwd()
         os.chdir(root_dir)
-        branch = subprocess.check_output(["git", "branch", "--show-current"])
-        branch = branch.decode().strip()
-        changes = subprocess.check_output(["git", "status", "-s"])
-        lines = changes.decode().split('\n')
-        modified = []
-        added = []
-        untracked = []
-        for line in lines:
-            line = line.rstrip()
-            if not line.strip():
-                continue
-            if line.startswith("M"):
-                added.append(os.path.join(root_dir, line[1:].strip()))
-            elif line.startswith(" M"):
-                modified.append(os.path.join(root_dir, line[2:].strip()))
-            elif line.startswith("??"):
-                untracked.append(os.path.join(root_dir, line[2:].strip()))
-            else:
-                pass
-        os.chdir(current_path)
-        return {
-            "branch": branch,
-            "modified": modified,
-            "added": added,
-            "untracked": untracked
-        }
+        branch_name = subprocess.check_output(
+            ["git", "branch", "--show-current"]
+        )
+        branch_name = branch_name.decode().strip()
+        os.chdir(current_dir)
+        return branch_name
 
 
-def getFileStatus(filepath):
-    """Returns the git info for the passed in file."""
-    gs = collectGitStatus(filepath)
-    if not gs:
-        return ""
-    branch = gs.get("branch", "n/a")
-    if filepath in gs["modified"]:
-        return "modified", branch
-    elif filepath in gs["added"]:
-        return "added", branch
-    elif filepath in gs["untracked"]:
-        return "untracked", branch
-    else:
-        return "unknown", branch
+if __name__ == '__main__':
+    # b = getBranchName("/home/john/repos/dotfiles/bashrc")
+    # print(b)
+    b = getBranchName("/home/john/repos/dotfiles")
+    print(b)
+#     filenames = [
+#         "/home/john/repos/dotfiles/bashrc",
+#         "/home/john/repos/dotfiles/vimrc",
+#         "/home/john/repos/dotfiles/junk.py",
+#         "/home/john/repos/dotfiles/install.sh",
+#         "/home/john/repos/dotfiles/not-existent.py",
+#         "/home/john/reqs.sh"
+#     ]
+# 
+#     for f in filenames:
+#         s = getFileStatus(f)
+#         b = getBranchName(f)
+#         print(f, s, b)
