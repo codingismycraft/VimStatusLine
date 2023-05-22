@@ -1,5 +1,32 @@
-" Pretty simple status line, purposely I am dodging the use of fancy plugins.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"                               John Pazarzis
+" 
+" Simple status line pluggin for vim focusing on git integration.
+" 
+" This is a straightforward Vim plugin designed to integrate with Git. The
+" focus is on simplicity, deliberately avoiding the use of complex plugins.
+" This approach allows for easy customization and maintenance. Additionally,
+" the status line does not include fancy emojis or images, as the main
+" objective is to keep it clean and minimalistic."
+"
+"        ,---,---,---,---,---,---,---,---,---,---,---,---,---,-------,
+"        |---'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-----|
+"        | ->| | Q | W | E | R | T | Y | U | I | O | P | ] | ^ |     |
+"        |-----',--',--',--',--',--',--',--',--',--',--',--',--'|    |
+"        | Caps | A | S | D | F | G | H | J | K | L | \ | [ | * |    |
+"        |----,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'---'----|
+"        |    | < | Z | X | C | V | B | N | M | , | . | - |          |
+"        |----'-,-',--'--,'---'---'---'---'---'---'-,-'---',--,------|
+"        | ctrl |  | alt |                          |altgr |  | ctrl |
+"        '------'  '-----'--------------------------'------'  '------'
+"
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Map to mode name.
+"
+
 let g:currentmode={
     \ 'n'  : 'NORMAL',
     \ 'v'  : 'VISUAL',
