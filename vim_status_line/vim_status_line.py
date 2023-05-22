@@ -91,22 +91,3 @@ def getBranchName(filepath, time_hash=None):
         os.chdir(current_dir)
         return branch_name
 
-
-if __name__ == '__main__':
-    # b = getBranchName("/home/john/repos/dotfiles/bashrc")
-    # print(b)
-    b = getBranchName("/home/john/repos/dotfiles")
-    print(b)
-#     filenames = [
-#         "/home/john/repos/dotfiles/bashrc",
-#         "/home/john/repos/dotfiles/vimrc",
-#         "/home/john/repos/dotfiles/junk.py",
-#         "/home/john/repos/dotfiles/install.sh",
-#         "/home/john/repos/dotfiles/not-existent.py",
-#         "/home/john/reqs.sh"
-#     ]
-# 
-#     for f in filenames:
-#         s = getFileStatus(f)
-#         b = getBranchName(f)
-#         print(f, s, b)
