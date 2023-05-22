@@ -1,4 +1,18 @@
 " Pretty simple status line, purposely I am dodging the use of fancy plugins.
+" Map to mode name.
+let g:currentmode={
+    \ 'n'  : 'NORMAL',
+    \ 'v'  : 'VISUAL',
+    \ 'V'  : 'V·LINE',
+    \ '' : 'V·BLOCK',
+    \ 's'  : 'SELECT',
+    \ 'S'  : 'S·LINE',
+    \ '' : 'S·BLOCK',
+    \ 'i'  : 'INSERT',
+    \ 'R'  : 'REPLACE',
+    \ 'Rv' : 'V·REPLACE',
+    \ 'c'  : 'COMMAND',
+    \}
 
 
 " Colors for file names based on their git status.
@@ -9,6 +23,9 @@ hi! FileCommited ctermfg=white ctermbg=blue
 hi! FileNotAvailable ctermfg=242 
 hi! InsertMode ctermfg=black ctermbg=red
 hi! ColumnNumber ctermfg=black ctermbg=gray
+hi! StatusLine cterm=bold ctermbg=21 guibg=blue guifg=cyan
+hi! StatusLineNC cterm=bold ctermbg=21 guibg=black guifg=Gray
+
 let separator = '  '
 
 " Build the status line.
