@@ -32,9 +32,6 @@ def _findGitRoot(path):
         return _findGitRoot(parent_dir)
 
 
-junk = 0
-
-
 def makeTimeHash(seconds=_DEFAULT_HASH_TIME):
     """Makes a time hash based on the passed in seconds."""
     return round(time.time() / seconds)
@@ -44,7 +41,7 @@ def makeTimeHash(seconds=_DEFAULT_HASH_TIME):
 def getFileStatus(filepath, time_hash=None):
     """Returns the git status for the passed in file.
 
-    git status -s <filename> 
+    git status -s <filename>
     """
     if not os.path.isfile(filepath):
         return "n/a"
@@ -90,4 +87,3 @@ def getBranchName(filepath, time_hash=None):
         branch_name = branch_name.decode().strip()
         os.chdir(current_dir)
         return branch_name
-
