@@ -39,6 +39,7 @@ let g:currentmode={
     \ 'R'  : 'REPLACE',
     \ 'Rv' : 'V·REPLACE',
     \ 'c'  : 'COMMAND',
+    \ 't'  : 'TERMINAL',
     \}
 
 
