@@ -87,3 +87,21 @@ set statusline+=%28{vim_status_line#GetGitBranch()}
 " Timer to rerfesh the status line.
 call timer_start(7000, {-> execute(':let &stl=&stl')}, {'repeat': -1})
 
+
+" Fix the missing colorschemes when loading a session..
+" 
+" I have found out that when saving / loading a session then
+" the colors are lost so, this is hack is meant to fix it..
+"
+" See also https://stackoverflow.com/questions/12797928/vim-statusline-loses-colors-after-reopening-session
+
+autocmd ColorScheme * hi FileModified ctermfg=17   ctermbg=cyan   
+autocmd ColorScheme * hi FileStaged ctermfg=black ctermbg=green
+autocmd ColorScheme * hi FileUntracked ctermfg=white ctermbg=52    
+autocmd ColorScheme * hi FileCommited ctermfg=white ctermbg=blue
+autocmd ColorScheme * hi FileNotAvailable ctermfg=242 
+autocmd ColorScheme * hi InsertMode ctermfg=black ctermbg=red
+autocmd ColorScheme * hi ColumnNumber ctermfg=black ctermbg=gray
+autocmd ColorScheme * hi StatusLine cterm=bold ctermbg=21 guibg=blue guifg=cyan
+autocmd ColorScheme * hi StatusLineNC cterm=bold ctermbg=21 guibg=black guifg=Gray
+
