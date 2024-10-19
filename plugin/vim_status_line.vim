@@ -24,8 +24,7 @@
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Map to mode name.
-"
+" Map to mode name.  "
 
 let g:currentmode={
     \ 'n'  : 'NORMAL',
@@ -43,6 +42,14 @@ let g:currentmode={
     \}
 
 
+" Customize colors based on the color scheme used.
+if g:colors_name==# 'zenburn'
+    let g:status_back_color = 'green'
+    highlight! Visual cterm=NONE ctermbg=0 ctermfg=NONE guibg=Grey10
+else
+    let g:status_back_color = '21'
+endif
+
 " Colors for file names based on their git status.
 hi! FileModified ctermfg=17   ctermbg=cyan   
 hi! FileStaged ctermfg=black ctermbg=green
@@ -51,8 +58,10 @@ hi! FileCommited ctermfg=white ctermbg=blue
 hi! FileNotAvailable ctermfg=242 
 hi! InsertMode ctermfg=black ctermbg=red
 hi! ColumnNumber ctermfg=black ctermbg=gray
-hi! StatusLine cterm=bold ctermbg=21 guibg=blue guifg=cyan
-hi! StatusLineNC cterm=bold ctermbg=21 guibg=black guifg=Gray
+
+execute 'hi! StatusLine   cterm=bold ctermbg='.g:status_back_color.' guibg=blue guifg=cyan'
+execute 'hi! StatusLineNC cterm=bold ctermbg='.g:status_back_color.' guibg=black guifg=Gray'
+
 
 let separator = '  '
 
@@ -93,6 +102,7 @@ autocmd ColorScheme * hi FileCommited ctermfg=white ctermbg=blue
 autocmd ColorScheme * hi FileNotAvailable ctermfg=242 
 autocmd ColorScheme * hi InsertMode ctermfg=black ctermbg=red
 autocmd ColorScheme * hi ColumnNumber ctermfg=black ctermbg=gray
-autocmd ColorScheme * hi StatusLine cterm=bold ctermbg=21 guibg=blue guifg=cyan
-autocmd ColorScheme * hi StatusLineNC cterm=bold ctermbg=21 guibg=black guifg=Gray
+execute 'autocmd ColorScheme * hi StatusLine cterm=bold ctermbg='.g:status_back_color.' guibg=blue guifg=cyan'
+execute 'autocmd ColorScheme * hi StatusLineNC cterm=bold ctermbg='.g:status_back_color.'  guibg=black guifg=Gray'
+
 
