@@ -1,9 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 "                               John Pazarzis
-" 
+"
 " Simple status line pluggin for vim focusing on git integration.
-" 
+"
 " This is a straightforward Vim plugin designed to integrate with Git. The
 " focus is on simplicity, deliberately avoiding the use of complex plugins.
 " This approach allows for easy customization and maintenance. Additionally,
@@ -25,8 +25,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
  " As a reference the following is the list of cterm-colors:
- " 
- " NR-16   NR-8    COLOR NAME 
+ "
+ " NR-16   NR-8    COLOR NAME
  " 0       0       Black
  " 1       4       DarkBlue
  " 2       2       DarkGreen
@@ -63,25 +63,32 @@ let g:currentmode={
 
 
 " Customize colors based on the color scheme used.
-if g:colors_name==# 'zenburn'
-    let g:status_back_color = 'green'
-    highlight! Visual cterm=NONE ctermbg=0 ctermfg=NONE guibg=Grey10
-else
-    let g:status_back_color = '21'
-    highlight! Visual cterm=NONE ctermbg=White ctermfg=Black guibg=Black
+"
+if exists('g:colors_name')
+    if g:colors_name==# 'zenburn'
+        let g:status_back_color = 'green'
+        highlight! Visual cterm=NONE ctermbg=0 ctermfg=NONE guibg=Grey10
+    elseif g:colors_name==# 'glacier'
+        let g:status_back_color = '21'
+        highlight! Visual cterm=NONE ctermbg=White ctermfg=Black guibg=Black
+    endif
 endif
 
 " Colors for file names based on their git status.
-hi! FileModified ctermfg=17   ctermbg=cyan   
+hi! FileModified ctermfg=17   ctermbg=cyan
 hi! FileStaged ctermfg=black ctermbg=green
-hi! FileUntracked ctermfg=white ctermbg=52    
+hi! FileUntracked ctermfg=white ctermbg=52
 hi! FileCommited ctermfg=white ctermbg=blue
-hi! FileNotAvailable ctermfg=242 
+hi! FileNotAvailable ctermfg=242
 hi! InsertMode ctermfg=black ctermbg=red
 hi! ColumnNumber ctermfg=black ctermbg=gray
 
-execute 'hi! StatusLine   cterm=bold ctermbg='.g:status_back_color.' guibg=blue guifg=cyan'
-execute 'hi! StatusLineNC cterm=bold ctermbg='.g:status_back_color.' guibg=black guifg=Gray'
+if exists('g:colors_name')
+    if g:colors_name ==# 'zenburn' || g:colors_name ==# 'glacier'
+        execute 'hi! StatusLine   cterm=bold ctermbg='.g:status_back_color.' guibg=blue guifg=cyan'
+        execute 'hi! StatusLineNC cterm=bold ctermbg='.g:status_back_color.' guibg=black guifg=Gray'
+    endif
+endif
 
 let separator = '  '
 
@@ -109,20 +116,26 @@ set statusline+=%#StatusLine#
 
 
 " Fix the missing colorschemes when loading a session..
-" 
+"
 " I have found out that when saving / loading a session then
 " the colors are lost so, this is hack is meant to fix it..
 "
 " See also https://stackoverflow.com/questions/12797928/vim-statusline-loses-colors-after-reopening-session
 
-autocmd ColorScheme * hi FileModified ctermfg=17   ctermbg=cyan   
+autocmd ColorScheme * hi FileModified ctermfg=17   ctermbg=cyan
 autocmd ColorScheme * hi FileStaged ctermfg=black ctermbg=green
-autocmd ColorScheme * hi FileUntracked ctermfg=white ctermbg=52    
+autocmd ColorScheme * hi FileUntracked ctermfg=white ctermbg=52
 autocmd ColorScheme * hi FileCommited ctermfg=white ctermbg=blue
-autocmd ColorScheme * hi FileNotAvailable ctermfg=242 
+autocmd ColorScheme * hi FileNotAvailable ctermfg=242
 autocmd ColorScheme * hi InsertMode ctermfg=black ctermbg=red
 autocmd ColorScheme * hi ColumnNumber ctermfg=black ctermbg=gray
-execute 'autocmd ColorScheme * hi StatusLine cterm=bold ctermbg='.g:status_back_color.' guibg=blue guifg=cyan'
-execute 'autocmd ColorScheme * hi StatusLineNC cterm=bold ctermbg='.g:status_back_color.'  guibg=black guifg=Gray'
+
+if exists('g:colors_name')
+    if g:colors_name ==# 'zenburn' || g:colors_name ==# 'glacier'
+        execute 'autocmd ColorScheme * hi StatusLine cterm=bold ctermbg='.g:status_back_color.' guibg=blue guifg=cyan'
+        execute 'autocmd ColorScheme * hi StatusLineNC cterm=bold ctermbg='.g:status_back_color.'  guibg=black guifg=Gray'
+    endif
+endif
+
 
 
